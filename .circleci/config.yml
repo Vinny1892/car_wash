@@ -2,7 +2,6 @@
 # See: https://circleci.com/docs/2.0/language-elixir/
 version: 2
 defaults: &defaults
-  working_directory: ~/repo
   resource_class: small
   docker:
       # specify the version here
@@ -13,7 +12,7 @@ defaults: &defaults
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/postgres:9.4
 
-   working_directory: ~/repo
+  working_directory: ~/repo
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
 # Define a job to be invoked later in a workflow.
@@ -32,6 +31,7 @@ commands:
 
 jobs:
   build-test:
+    <<: *defaults
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
    
