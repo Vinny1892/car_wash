@@ -46,7 +46,6 @@ workflows:
   build-and-test-worflow:
     jobs:
       - build-test:
-          context: global
           filters:
             branches:
               ignore: main
