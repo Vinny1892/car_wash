@@ -4,8 +4,20 @@ version: 2
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+commands:
+  update-dependencies-and-install:
+    steps:
+      - run:
+          name:  update-dependencies
+          command: |
+            mix local.hex --force && mix local.rebar --force
+      - run:
+          name: install-dependencies
+          command: mix deps.get
+        
+
 jobs:
-  build:
+  build-test:
     resource_class: small
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
@@ -23,9 +35,17 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
-      - run: ls -la
+      - update-dependencies-and-install
       # specify any bash command here prefixed with `run: `
-      - run: mix local.hex --force && mix local.rebar --force
-      - run: mix deps.get
       # - run: mix ecto.create
-      - run: mix test test/unit
+      - run:  mix test test/unit
+workflows:
+  version: 2
+  build-and-test-worflow:
+    jobs:
+      - build-test
+          context: global
+          filters:
+            branches:
+              ignore: main
+      
