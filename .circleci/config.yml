@@ -43,7 +43,7 @@ workflows:
   version: 2
   build-and-test-worflow:
     jobs:
-      - build-test
+      - build-test:
           context: global
           filters:
             branches:
